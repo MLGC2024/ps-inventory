@@ -2388,7 +2388,8 @@ QBCore.Commands.Add("giveitem", "Give An Item (Admin Only)", {{name="id", help="
 			if itemData then
 				-- check iteminfo
 				local info = {}
-				if itemData["name"] == "id_card" then
+				--removed by pamela for um-idcard
+				--[[if itemData["name"] == "id_card" then
 					info.citizenid = Player.PlayerData.citizenid
 					info.firstname = Player.PlayerData.charinfo.firstname
 					info.lastname = Player.PlayerData.charinfo.lastname
@@ -2399,7 +2400,14 @@ QBCore.Commands.Add("giveitem", "Give An Item (Admin Only)", {{name="id", help="
 					info.firstname = Player.PlayerData.charinfo.firstname
 					info.lastname = Player.PlayerData.charinfo.lastname
 					info.birthdate = Player.PlayerData.charinfo.birthdate
-					info.type = "Class C Driver License"
+					info.type = "Class C Driver License"]]
+				--till here and added below
+				local cardlist = {"id_card", "driver_license", "weaponlicense", "lawyerpass", "huntinglicense"}
+					if string.find(table.concat(cardlist, ","), itemData["name"]) then
+						exports['um-idcard']:CreateMetaLicense(source, itemData["name"])
+						QBCore.Functions.Notify(source, Lang:t("notify.yhg") ..GetPlayerName(id).." "..amount.." "..itemData["name"].. "", "success")
+					return
+				--till here for um-idcard 
 				elseif itemData["type"] == "weapon" then
 					amount = 1
 					info.serie = tostring(QBCore.Shared.RandomInt(2) .. QBCore.Shared.RandomStr(3) .. QBCore.Shared.RandomInt(1) .. QBCore.Shared.RandomStr(2) .. QBCore.Shared.RandomInt(3) .. QBCore.Shared.RandomStr(4))
@@ -2469,7 +2477,8 @@ end, 'admin')
 --     end
 -- end)
 
-CreateUsableItem("driver_license", function(source, item)
+--removed for um-idcard by pamela
+--[[CreateUsableItem("driver_license", function(source, item)
 	local playerPed = GetPlayerPed(source)
 	local playerCoords = GetEntityCoords(playerPed)
 	local players = QBCore.Functions.GetPlayers()
@@ -2490,9 +2499,10 @@ CreateUsableItem("driver_license", function(source, item)
 			)
 		end
 	end
-end)
+end)]]
 
-CreateUsableItem("id_card", function(source, item)
+--removed for um-idcard by pamela
+--[[CreateUsableItem("id_card", function(source, item)
 	local playerPed = GetPlayerPed(source)
 	local playerCoords = GetEntityCoords(playerPed)
 	local players = QBCore.Functions.GetPlayers()
@@ -2519,7 +2529,8 @@ CreateUsableItem("id_card", function(source, item)
 			)
 		end
 	end
-end)
+end)]]
+--till here
 
 
 CreateThread(function()
